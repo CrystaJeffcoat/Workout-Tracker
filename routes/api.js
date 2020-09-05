@@ -1,43 +1,49 @@
 const router = require("express").Router();
-const Workout = require("../models");
+const db = require("../models");
 
-router.post('/api/workouts', ({ body }, res) => {
-  Workout.create(body)
-    .then(db => {
-      console.log("data" + db);
-      res.json(db);
-    })
-    .catch(err => {
-      res.send(400).json(err);
-    })
-});
-
-router.get('/api/workouts', (req, res) => {
-  Workout.find({})
+// gets all workouts from database and sends to server
+router.post('/api/workouts', (req, res) => {
+  db.find({})
     .then(db => {
       res.json(db);
     })
     .catch(err => {
       res.status(400).json(err);
     });
+    console.log("sent to res from post!")
 });
 
+// renders the html page
 router.get("/exercise", (req, res) => {
-  res.render("exercise.html");
+  res.render('./exercise.html');
 });
 
-router.get("api/workouts/:id", ({ body }, res) => {
-  Workout.create(body)
+// gets new workout data and creates a new document in the database
+router.put('/api/workouts/undefined', ({ body },res) => {
+  db.insertMany({ exercises: [ body ] })
     .then(db => {
       res.json(db)
     })
     .catch(err => {
+      res.status(400).json(err);
+    });
+    console.log("inserted many!");
+});
+
+// updates workouts by id 
+router.put("/api/workouts/:id", (req, res) => {
+  db.update({_id: req.params.id},{ $push: {exercises: req.body }})
+    .then(db => {
+      res.send(db)
+    })
+    .catch(err => {
       res.status(400).json(err)
     });
+    console.log("updated!");
 });
 
 router.get('/api/workouts/range', (req, res) => {
-  Workout.find({})
+  db.find({})
     .sort({day: -1})
     .then(dbworkout => {
       console.log(dbworkout)
