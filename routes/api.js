@@ -13,6 +13,22 @@ router.post('/api/workouts', (req, res) => {
     console.log("sent to res from post!")
 });
 
+// gets all workouts from database and sends to server
+router.get('/api/workouts', (req, res) => {
+  db.find({})
+    .then(db => {
+      res.json(db);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+    console.log("sent to res from get!")
+});
+
+router.get('/stats', (req, res) => {
+  res.render('./stats');
+});
+
 // renders the html page
 router.get("/exercise", (req, res) => {
   res.render('./exercise.html');
@@ -46,7 +62,6 @@ router.get('/api/workouts/range', (req, res) => {
   db.find({})
     .sort({day: -1})
     .then(dbworkout => {
-      console.log(dbworkout)
       res.json(dbworkout)
     })
     .catch(err => {
