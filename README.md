@@ -1,6 +1,6 @@
 # Workout-Tracker
-https://damp-retreat-20371.herokuapp.com/
 > View, create, and track daily workouts  
+Go to site: https://damp-retreat-20371.herokuapp.com/
 
 ## Table of Contents
 * [Description](#Description)
